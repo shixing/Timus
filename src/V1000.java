@@ -1,6 +1,6 @@
 import java.io.*;
 
-public class AplusB {
+public class V1000 {
 	
 	public static void main(String argc[]) throws Exception
 	{
