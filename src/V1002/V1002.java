@@ -14,40 +14,13 @@ public class V1002 { // BFS method, too simple, too naive
 		while ((line = fin.readLine()) != null) {
 			if (line.equals("-1"))
 				break;
-			long start, end;
-			start = System.currentTimeMillis();
+//			long start, end;
+//			start = System.currentTimeMillis();
 			String number = line;
+			int numLength=number.length();
 			int ndicts = Integer.parseInt(fin.readLine());
 			int maxlength = 0;
-			// Node root=new Node();
-			// for (int i=0;i<ndicts;i++)
-			// {
-			// String w=fin.readLine();
-			// Word word=new Word(w);
-			// if (maxlength<w.length())
-			// maxlength=w.length();
-			// Node father=root;
-			// for (int j=0;j<word.value.length();j++)
-			// {
-			// char s=word.value.charAt(j);
-			// if (father.children.containsKey(s))
-			// {
-			// father=father.children.get(s);
-			// }
-			// else
-			// {
-			// Node n=new Node();
-			// //n.c=s;
-			// //n.father=father;
-			// father.children.put(s, n);
-			// father=n;
-			// }
-			// if (j==word.value.length()-1)
-			// {
-			// father.w=word;
-			// }
-			// }
-			// }
+			
 			ArrayList<Word> dict = new ArrayList<Word>();
 			for (int i = 0; i < ndicts; i++) {
 				String w = fin.readLine();
@@ -56,45 +29,46 @@ public class V1002 { // BFS method, too simple, too naive
 					maxlength = w.length();
 				dict.add(word);
 			}
-			end = System.currentTimeMillis();
-			System.out.println(end - start);
+//			end = System.currentTimeMillis();
+//			System.out.println(end - start);
 			// build tria
-			start = System.currentTimeMillis();
+//			start = System.currentTimeMillis();
 			Node root = new Node();
-			// root.c="root";
 			for (Word word : dict) {
 				Node father = root;
-				for (int i = 0; i < word.value.length(); i++) {
-					char s = word.value.charAt(i);
+				char[] cc=word.value.toCharArray();
+				for (int i = 0; i < cc.length; i++) {
+					char s = cc[i];
 					int index=s-'0';
-					if (father.children.containsKey(s)) {
-						father = father.children.get(s);
+					if (father.children[index]!=null) {
+						father = father.children[index];
 					} else {
 						Node n = new Node();
 						// n.c=s;
 						// n.father=father;
-						father.children.put(s, n);
+						father.children[index]=n;
 						father = n;
 					}
-					if (i == word.value.length() - 1) {
+					if (i == cc.length - 1) {
 						father.w = word;
 					}
 				}
 			}
-			end = System.currentTimeMillis();
-			System.out.println(end - start);
-			start = System.currentTimeMillis();
+//			end = System.currentTimeMillis();
+//			System.out.println(end - start);
+//			start = System.currentTimeMillis();
 			// finished trie
 
 			// init the table;
-			Word[][] bits = new Word[number.length()][maxlength + 1];
-			for (int i = 0; i < number.length(); i++) {
+			Word[][] bits = new Word[numLength][maxlength + 1];
+			for (int i = 0; i < numLength; i++) {
 				// search the tria;
 				Node father = root;
-				for (int j = i; j < number.length(); j++) {
+				for (int j = i; j < numLength; j++) {
 					char s = number.charAt(j);
-					if (father.children.containsKey(s)) {
-						father = father.children.get(s);
+					int index=s-'0';
+					if (father.children[index]!=null) {
+						father = father.children[index];
 						if (father.w != null) {
 							bits[j][father.w.value.length()] = father.w;
 						}
@@ -102,13 +76,14 @@ public class V1002 { // BFS method, too simple, too naive
 						break;
 				}
 			}
-			end = System.currentTimeMillis();
-			System.out.println(end - start);
-			start = System.currentTimeMillis();
+//			end = System.currentTimeMillis();
+//			System.out.println(end - start);
+//			start = System.currentTimeMillis();
+			
 			// finish bits;
 			// test bits;
 			// {
-			// for (int i=0;i<number.length();i++)
+			// for (int i=0;i<numLength;i++)
 			// {
 			// System.out.print(number.charAt(i)+" ");
 			// for (int j=0;j<maxlength;j++)
@@ -119,10 +94,10 @@ public class V1002 { // BFS method, too simple, too naive
 			// System.out.println();
 			// }
 			// dp
-			start = System.currentTimeMillis();
-			int[] f = new int[number.length() + 1];
-			int[] from = new int[number.length() + 1];
-			Word[] cur = new Word[number.length() + 1];
+//			start = System.currentTimeMillis();
+			int[] f = new int[numLength + 1];
+			int[] from = new int[numLength + 1];
+			Word[] cur = new Word[numLength + 1];
 			f[0] = 0;
 			for (int i = 1; i < f.length; i++)
 				f[i] = Integer.MAX_VALUE - 10;
@@ -137,50 +112,50 @@ public class V1002 { // BFS method, too simple, too naive
 					}
 				}
 			}
-			if (f[number.length()] > number.length())
+			if (f[numLength] > numLength)
 				System.out.println("No solution.");
 			else {
-				String output = cur[number.length()].word;
-				int father = from[number.length()];
+				String output = cur[numLength].word;
+				int father = from[numLength];
 				while (father != 0) {
 					output = cur[father].word + " " + output;
 					father = from[father];
 				}
 				System.out.println(output);
 			}
-			end=System.currentTimeMillis();
-			System.out.println(end-start);
+//			end=System.currentTimeMillis();
+//			System.out.println(end-start);
 			
 		}
 	}
 
 }
 
-class KeyBoard {
-	private static KeyBoard kb = null;
-	public HashMap<String, String> map = new HashMap<String, String>();
-
-	private KeyBoard() {
-		String s[] = { "oqz", "ij", "abc", "def", "gh", "kl", "mn", "prs",
-				"tuv", "wxy" };
-		for (int i = 0; i < s.length; i++) {
-			for (int j = 0; j < s[i].length(); j++) {
-				String key = s[i].charAt(j) + "";
-				this.map.put(key, i + "");
-			}
-		}
-
-	}
-
-	public static KeyBoard getInstance() {
-		if (kb == null) {
-			kb = new KeyBoard();
-		}
-		return kb;
-
-	}
-
-}
+//class KeyBoard {
+//	private static KeyBoard kb = null;
+//	public HashMap<String, String> map = new HashMap<String, String>();
+//
+//	private KeyBoard() {
+//		String s[] = { "oqz", "ij", "abc", "def", "gh", "kl", "mn", "prs",
+//				"tuv", "wxy" };
+//		for (int i = 0; i < s.length; i++) {
+//			for (int j = 0; j < s[i].length(); j++) {
+//				String key = s[i].charAt(j) + "";
+//				this.map.put(key, i + "");
+//			}
+//		}
+//
+//	}
+//
+//	public static KeyBoard getInstance() {
+//		if (kb == null) {
+//			kb = new KeyBoard();
+//		}
+//		return kb;
+//
+//	}
+//
+//}
 
 class Word {
 	String word;
@@ -193,7 +168,7 @@ class Word {
 		this.word = word;
 		StringBuilder sb = new StringBuilder("");
 		// StringBuffer sb=new StringBuffer("");
-		KeyBoard kb = KeyBoard.getInstance();
+		//KeyBoard kb = KeyBoard.getInstance();
 		for (int i = 0; i < word.length(); i++) {
 			 if (word.charAt(i)-'a'>=0)
 			 sb.append(dict[word.charAt(i)-'a']);
@@ -205,5 +180,5 @@ class Word {
 
 class Node {
 	Word w;
-	HashMap<Character, Node> children = new HashMap<Character, Node>();
+	Node children[]=new Node[10];
 }
