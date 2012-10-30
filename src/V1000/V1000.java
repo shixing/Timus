@@ -1,3 +1,4 @@
+package V1000;
 import java.io.*;
 
 public class V1000 {
