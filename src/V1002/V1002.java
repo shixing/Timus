@@ -162,6 +162,7 @@ public class V1002 { // BFS method, too simple, too naive
 			// System.out.println(end-start);
 
 		}
+		System.out.println("shixing");
 	}
 
 }
