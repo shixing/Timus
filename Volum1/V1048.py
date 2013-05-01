@@ -8,6 +8,7 @@ line = sys.stdin.readline()
 na = ord(line[0])-48
 nb = ord(line[2])-48
 temp = (na+nb) % 10
+
 for line in sys.stdin:
     #print line
     na = ord(line[0])-48
@@ -26,6 +27,7 @@ for line in sys.stdin:
             sys.stdout.write('0')
         count = 0
         temp = na+nb-10
+
 sys.stdout.write(str(temp))
 for i in xrange(count):
     sys.stdout.write('9')
