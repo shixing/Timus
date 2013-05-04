@@ -16,7 +16,6 @@ def addMorePrime(ps):
         n += 1
 
 def factorize(n,ps,m):
-
     pi = 0
 
     while True:
@@ -59,3 +58,4 @@ for key in m:
 print sum % 10
     
 
+print 
